@@ -46,13 +46,10 @@ public class UploadFileController {
   @GetMapping("/files/{filename:.+}")
   @ResponseBody
   public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
     Resource file = storageService.loadAsResource(filename);
-
     if (file == null) {
       return ResponseEntity.notFound().build();
     }
-
     return ResponseEntity.ok()
         .header(
             HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
@@ -62,10 +59,8 @@ public class UploadFileController {
   @PostMapping("/")
   public String handleFileUpload(
       @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
-
-    storageService.store(file);
-    redirectAttributes.addFlashAttribute(
-        "message", "You successfully uploaded " + file.getOriginalFilename() + "!");
+    String path = storageService.store(file);
+    redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + path + "!");
 
     return "redirect:/";
   }

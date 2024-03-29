@@ -7,9 +7,15 @@ to your UI, instead of spinning up actual CDN.
 
 ## Execute
 
+
 - run [MockCdnApplication.java](src%2Fmain%2Fjava%2Fcom%2Fandriidnikitin%2Ftools%2FMockCdnApplication.java).
   alternatively (to run in docker) - execute [build.sh](build.sh)
 - open http://localhost:8080
+
+## TODO
+
+- restrict supported file types
+- put images under `/images` path, not under `/files` path
 
 ### Links
 
