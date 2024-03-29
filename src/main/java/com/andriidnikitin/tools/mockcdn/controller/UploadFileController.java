@@ -1,7 +1,7 @@
-package com.andriidnikitin.tools.controller;
+package com.andriidnikitin.tools.mockcdn.controller;
 
-import com.andriidnikitin.tools.exception.StorageFileNotFoundException;
-import com.andriidnikitin.tools.service.StorageService;
+import com.andriidnikitin.tools.mockcdn.exception.StorageFileNotFoundException;
+import com.andriidnikitin.tools.mockcdn.service.StorageService;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;

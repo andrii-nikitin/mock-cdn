@@ -1,4 +1,4 @@
-package com.andriidnikitin.tools.service;
+package com.andriidnikitin.tools.mockcdn.service;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;

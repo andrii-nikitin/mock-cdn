@@ -1,4 +1,4 @@
-package com.andriidnikitin.tools.exception;
+package com.andriidnikitin.tools.mockcdn.exception;
 
 public class StorageFileNotFoundException extends StorageException {
 

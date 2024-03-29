@@ -1,4 +1,4 @@
-package com.andriidnikitin.tools;
+package com.andriidnikitin.tools.mockcdn;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

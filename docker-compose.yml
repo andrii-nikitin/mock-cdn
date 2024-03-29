@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  mock-cdn:
+    image: com.andriidnikitin.tools/mock-cdn
+    ports:
+      - 8080:8080
+    volumes:
+      - web_data:/var/cdn-content
+#    environment:
+#      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+#      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+#      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+#  mongo:
+#    image: mongo
+#    restart: always
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: example
+#    volumes:
+#      - db_data:/var/lib/mysql
+volumes:
+  web_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /data/web_data
+      o: bind

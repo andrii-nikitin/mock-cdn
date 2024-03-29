@@ -1,4 +1,4 @@
-package com.andriidnikitin.tools;
+package com.andriidnikitin.tools.mockcdn;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -8,8 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.andriidnikitin.tools.exception.StorageFileNotFoundException;
-import com.andriidnikitin.tools.service.StorageService;
+import com.andriidnikitin.tools.mockcdn.exception.StorageFileNotFoundException;
+import com.andriidnikitin.tools.mockcdn.service.StorageService;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 import org.hamcrest.Matchers;

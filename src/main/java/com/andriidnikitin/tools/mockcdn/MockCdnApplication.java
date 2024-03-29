@@ -1,6 +1,6 @@
-package com.andriidnikitin.tools;
+package com.andriidnikitin.tools.mockcdn;
 
-import com.andriidnikitin.tools.service.StorageService;
+import com.andriidnikitin.tools.mockcdn.service.StorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

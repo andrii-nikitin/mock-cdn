@@ -1,7 +1,7 @@
-package com.andriidnikitin.tools.service;
+package com.andriidnikitin.tools.mockcdn.service;
 
-import com.andriidnikitin.tools.exception.StorageException;
-import com.andriidnikitin.tools.exception.StorageFileNotFoundException;
+import com.andriidnikitin.tools.mockcdn.exception.StorageException;
+import com.andriidnikitin.tools.mockcdn.exception.StorageFileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
