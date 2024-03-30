@@ -1,9 +1,8 @@
-package com.andriidnikitin.tools.mockcdn.controller;
+package com.andriidnikitin.tools.mockcdn.mvc;
 
 import com.andriidnikitin.tools.mockcdn.exception.StorageFileNotFoundException;
 import com.andriidnikitin.tools.mockcdn.service.StorageService;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
 public class UploadFileController {
@@ -30,17 +27,9 @@ public class UploadFileController {
 
   @GetMapping("/")
   public String listUploadedFiles(Model model) throws IOException {
-    List<String> files =
-        storageService.loadAll().map(UploadFileController::toFilePath).collect(Collectors.toList());
+    List<String> files = storageService.loadAll().collect(Collectors.toList());
     model.addAttribute("files", files);
     return "uploadForm";
-  }
-
-  private static String toFilePath(Path path) {
-    String fileName = path.getFileName().toString();
-    UriComponentsBuilder fileUri =
-        MvcUriComponentsBuilder.fromMethodName(UploadFileController.class, "serveFile", fileName);
-    return fileUri.build().toUri().toString();
   }
 
   @GetMapping("/files/{filename:.+}")

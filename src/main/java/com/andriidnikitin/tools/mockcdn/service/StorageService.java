@@ -12,11 +12,13 @@ public interface StorageService {
 
   String store(MultipartFile file);
 
-  Stream<Path> loadAll();
+  Stream<String> loadAll();
 
   Path load(String filename);
 
   Resource loadAsResource(String filename);
+
+  void delete(String filename);
 
   void deleteAll();
 }

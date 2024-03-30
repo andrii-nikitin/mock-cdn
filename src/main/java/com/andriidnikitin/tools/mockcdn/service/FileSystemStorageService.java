@@ -2,6 +2,7 @@ package com.andriidnikitin.tools.mockcdn.service;
 
 import com.andriidnikitin.tools.mockcdn.exception.StorageException;
 import com.andriidnikitin.tools.mockcdn.exception.StorageFileNotFoundException;
+import com.andriidnikitin.tools.mockcdn.mvc.UploadFileController;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -20,6 +21,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class FileSystemStorageService implements StorageService {
@@ -53,11 +56,12 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
-  public Stream<Path> loadAll() {
+  public Stream<String> loadAll() {
     try {
       return Files.walk(this.rootLocation, 1)
           .filter(path -> !path.equals(this.rootLocation))
-          .map(this.rootLocation::relativize);
+          .map(this.rootLocation::relativize)
+          .map(FileSystemStorageService::toFilePath);
     } catch (IOException e) {
       throw new StorageException("Failed to read stored files", e);
     }
@@ -84,6 +88,16 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
+  public void delete(String filename) {
+    Path path = rootLocation.resolve(filename);
+    try {
+      Files.delete(path);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
   public void deleteAll() {
     FileSystemUtils.deleteRecursively(rootLocation.toFile());
   }
@@ -95,6 +109,13 @@ public class FileSystemStorageService implements StorageService {
     } catch (IOException e) {
       throw new StorageException("Could not initialize storage", e);
     }
+  }
+
+  private static String toFilePath(Path path) {
+    String fileName = path.getFileName().toString();
+    UriComponentsBuilder fileUri =
+        MvcUriComponentsBuilder.fromMethodName(UploadFileController.class, "serveFile", fileName);
+    return fileUri.build().toUri().toString();
   }
 
   private Path buildNewFilePath(String fileExtension) {
