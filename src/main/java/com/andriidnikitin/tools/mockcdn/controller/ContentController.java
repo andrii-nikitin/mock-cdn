@@ -1,5 +1,6 @@
 package com.andriidnikitin.tools.mockcdn.controller;
 
+import com.andriidnikitin.tools.mockcdn.model.Content;
 import com.andriidnikitin.tools.mockcdn.service.StorageService;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,13 +8,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@RestController("/content")
+@RestController
+@RequestMapping("/content")
 public class ContentController {
 
   private final StorageService storageService;
@@ -28,15 +30,19 @@ public class ContentController {
     return storageService.loadAll().collect(Collectors.toList());
   }
 
-  @GetMapping(value = "/{filename:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
-  // TODO add actual type of downloaded file
-  public @ResponseBody byte[] serveFile(@PathVariable String filename) throws IOException {
-    Resource file = storageService.loadAsResource(filename);
-    InputStream in = file.getInputStream();
-    return IOUtils.toByteArray(in);
+  @GetMapping(
+      value = "/{filename:.+}",
+      produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
+  public ResponseEntity<byte[]> serveFile(@PathVariable String filename) throws IOException {
+    Content content = storageService.loadAsResource(filename);
+    InputStream in = content.getResource().getInputStream();
+    byte[] result = IOUtils.toByteArray(in);
+    return ResponseEntity.status(HttpStatus.OK)
+        .contentType(content.getType())
+        .body(result);
   }
 
-  @PostMapping("/single/upload")
+  @PostMapping
   public ResponseEntity<String> fileUploading(@RequestParam("file") MultipartFile file) {
     // TODO validate type of uploaded file
     String filename = storageService.store(file);

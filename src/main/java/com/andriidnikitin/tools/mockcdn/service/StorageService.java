@@ -1,10 +1,9 @@
 package com.andriidnikitin.tools.mockcdn.service;
 
-import org.springframework.core.io.Resource;
-import org.springframework.web.multipart.MultipartFile;
-
+import com.andriidnikitin.tools.mockcdn.model.Content;
 import java.nio.file.Path;
 import java.util.stream.Stream;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface StorageService {
 
@@ -16,7 +15,7 @@ public interface StorageService {
 
   Path load(String filename);
 
-  Resource loadAsResource(String filename);
+  Content loadAsResource(String filename);
 
   void delete(String filename);
 

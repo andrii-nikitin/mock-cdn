@@ -1,7 +1,9 @@
 package com.andriidnikitin.tools.mockcdn.service;
 
+import com.andriidnikitin.tools.mockcdn.controller.ContentController;
 import com.andriidnikitin.tools.mockcdn.exception.StorageException;
 import com.andriidnikitin.tools.mockcdn.exception.StorageFileNotFoundException;
+import com.andriidnikitin.tools.mockcdn.model.Content;
 import com.andriidnikitin.tools.mockcdn.mvc.UploadFileController;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +33,7 @@ public class FileSystemStorageService implements StorageService {
   private final Path rootLocation;
 
   @Autowired
-  public FileSystemStorageService(@Value("app.upload-dir") String folder) {
+  public FileSystemStorageService(@Value("${app.upload-dir}") String folder) {
     if (folder.trim().length() == 0) {
       throw new StorageException("File upload location can not be Empty.");
     }
@@ -73,12 +76,14 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
-  public Resource loadAsResource(String filename) {
+  public Content loadAsResource(String filename) {
     try {
       Path file = load(filename);
       Resource resource = new UrlResource(file.toUri());
       if (resource.exists() || resource.isReadable()) {
-        return resource;
+        String fileExtension = FilenameUtils.getExtension(file.getFileName().toString());
+        MediaType mediaType = MediaType.parseMediaType("image/" + fileExtension);
+        return new Content(mediaType, resource);
       } else {
         throw new StorageFileNotFoundException("Could not read file: " + filename);
       }
@@ -114,7 +119,7 @@ public class FileSystemStorageService implements StorageService {
   private static String toFilePath(Path path) {
     String fileName = path.getFileName().toString();
     UriComponentsBuilder fileUri =
-        MvcUriComponentsBuilder.fromMethodName(UploadFileController.class, "serveFile", fileName);
+        MvcUriComponentsBuilder.fromMethodName(ContentController.class, "serveFile", fileName);
     return fileUri.build().toUri().toString();
   }
 
