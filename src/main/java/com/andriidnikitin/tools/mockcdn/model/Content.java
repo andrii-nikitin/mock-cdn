@@ -8,6 +8,6 @@ import org.springframework.http.MediaType;
 @Data
 @AllArgsConstructor
 public class Content {
-    private MediaType type;
-    private Resource resource;
+  private MediaType type;
+  private Resource resource;
 }

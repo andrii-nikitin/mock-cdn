@@ -37,14 +37,11 @@ public class ContentController {
     Content content = storageService.loadAsResource(filename);
     InputStream in = content.getResource().getInputStream();
     byte[] result = IOUtils.toByteArray(in);
-    return ResponseEntity.status(HttpStatus.OK)
-        .contentType(content.getType())
-        .body(result);
+    return ResponseEntity.status(HttpStatus.OK).contentType(content.getType()).body(result);
   }
 
   @PostMapping
   public ResponseEntity<String> fileUploading(@RequestParam("file") MultipartFile file) {
-    // TODO validate type of uploaded file
     String filename = storageService.store(file);
     return ResponseEntity.ok(filename);
   }

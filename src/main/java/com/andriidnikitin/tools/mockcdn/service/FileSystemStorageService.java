@@ -4,7 +4,6 @@ import com.andriidnikitin.tools.mockcdn.controller.ContentController;
 import com.andriidnikitin.tools.mockcdn.exception.StorageException;
 import com.andriidnikitin.tools.mockcdn.exception.StorageFileNotFoundException;
 import com.andriidnikitin.tools.mockcdn.model.Content;
-import com.andriidnikitin.tools.mockcdn.mvc.UploadFileController;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -49,6 +48,11 @@ public class FileSystemStorageService implements StorageService {
       String originalFilename = file.getOriginalFilename();
       String fileExtension = FilenameUtils.getExtension(originalFilename);
       Path resultPath = buildNewFilePath(fileExtension);
+      MediaType mediaType = MediaType.parseMediaType("image/" + fileExtension);
+      if (!isImage(mediaType)) {
+        throw new RuntimeException("Upload not supported for media type " + mediaType.getType());
+      }
+
       try (InputStream inputStream = file.getInputStream()) {
         Files.copy(inputStream, resultPath, StandardCopyOption.REPLACE_EXISTING);
         return resultPath.getFileName().toString();
@@ -56,6 +60,12 @@ public class FileSystemStorageService implements StorageService {
     } catch (IOException e) {
       throw new StorageException("Failed to store file.", e);
     }
+  }
+
+  private boolean isImage(MediaType mediaType) {
+    return mediaType.isCompatibleWith(MediaType.IMAGE_GIF)
+        || mediaType.isCompatibleWith(MediaType.IMAGE_PNG)
+        || mediaType.isCompatibleWith(MediaType.IMAGE_JPEG);
   }
 
   @Override

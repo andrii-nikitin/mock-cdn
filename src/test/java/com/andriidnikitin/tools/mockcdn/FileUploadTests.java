@@ -30,7 +30,8 @@ public class FileUploadTests {
 
   @Test
   public void shouldListAllFiles() throws Exception {
-    given(this.storageService.loadAll()).willReturn(Stream.of("http://localhost/first.txt", "http://localhost/second.txt"));
+    given(this.storageService.loadAll())
+        .willReturn(Stream.of("http://localhost/first.txt", "http://localhost/second.txt"));
 
     this.mvc
         .perform(get("/"))

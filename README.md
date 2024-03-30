@@ -11,11 +11,6 @@ to your UI, instead of spinning up actual CDN.
   alternatively (to run in docker) - execute [build.sh](build.sh)
 - open http://localhost:8080
 
-## TODO
-
-- restrict supported file types
-- put images under `/images` path, not under `/files` path
-
 ### Links
 
 - write file to mongodb as BSON: https://www.mongodb.com/docs/spark-connector/current/streaming-mode/streaming-write/

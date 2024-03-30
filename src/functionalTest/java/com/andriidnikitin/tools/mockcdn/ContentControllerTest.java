@@ -29,8 +29,14 @@ public class ContentControllerTest {
   @Test
   void uploadImage() {
     assertEquals(0, loadAllContent().size());
-    uploadContent("img.png");
+    uploadContent("test/img.png").expectStatus().isOk();
+    ;
     assertEquals(1, loadAllContent().size());
+  }
+
+  @Test
+  void uploadText_notSupported() {
+    uploadContent("test/text.txt").expectStatus().isBadRequest();
   }
 
   private List loadAllContent() {
@@ -43,18 +49,16 @@ public class ContentControllerTest {
         .getResponseBody();
   }
 
-  private void uploadContent(String filename) {
+  private WebTestClient.ResponseSpec uploadContent(String filename) {
     MultipartBodyBuilder multipartBodyBuilder = new MultipartBodyBuilder();
     multipartBodyBuilder
         .part("file", new ClassPathResource(filename))
         .contentType(MediaType.MULTIPART_FORM_DATA);
 
-    webTestClient
+    return webTestClient
         .post()
         .uri("/content")
         .body(BodyInserters.fromMultipartData(multipartBodyBuilder.build()))
-        .exchange()
-        .expectStatus()
-        .isOk();
+        .exchange();
   }
 }
