@@ -42,8 +42,9 @@ dependencies {
     functionalTestCompileOnly "org.projectlombok:lombok:${lombokVersion}"
 
     functionalTestImplementation 'org.springframework.boot:spring-boot-starter-test'
-    functionalTestImplementation 'org.springframework.kafka:spring-kafka-test'
+    functionalTestImplementation 'org.springframework.boot:spring-boot-starter-web'
     functionalTestImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+    functionalTestImplementation 'commons-io:commons-io:2.6'
     functionalTestAnnotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     functionalTestImplementation 'org.apache.commons:commons-collections4:4.4'
 }
