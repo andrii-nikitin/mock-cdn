@@ -6,7 +6,7 @@ It allows you to upload an image and get a URL you can embed
 to your UI, instead of spinning up actual CDN.
 
 ## Execute
-
+- execute `gradle build`
 - run [MockCdnApplication.java](src%2Fmain%2Fjava%2Fcom%2Fandriidnikitin%2Ftools%2FMockCdnApplication.java).
   alternatively (to run in docker) - execute [build.sh](build.sh)
 - open http://localhost:8080
